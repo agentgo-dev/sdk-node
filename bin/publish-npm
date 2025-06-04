@@ -1,0 +1,90 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# NPM publish script for AgentGo Node.js SDK
+
+echo "🚀 Starting NPM publish process..."
+
+# Run release environment check first
+echo "📋 Running release environment check..."
+if ! ./bin/check-release-environment; then
+    echo "❌ Release environment check failed. Aborting publish."
+    exit 1
+fi
+
+# Get package version
+PACKAGE_VERSION=$(node -p "require('./package.json').version")
+PACKAGE_NAME=$(node -p "require('./package.json').name")
+
+echo "📦 Publishing $PACKAGE_NAME@$PACKAGE_VERSION"
+
+# Check if this version already exists on npm
+if npm view "$PACKAGE_NAME@$PACKAGE_VERSION" version >/dev/null 2>&1; then
+    echo "❌ Error: Version $PACKAGE_VERSION already exists on npm."
+    echo "Please update the version in package.json before publishing."
+    exit 1
+fi
+
+# Clean and rebuild
+echo "🧹 Cleaning previous build..."
+npm run clean
+
+echo "🔨 Building package..."
+npm run build
+
+# Verify build artifacts exist
+if [ ! -d "dist" ]; then
+    echo "❌ Error: dist directory not found after build."
+    exit 1
+fi
+
+if [ ! -f "dist/index.js" ] || [ ! -f "dist/index.d.ts" ]; then
+    echo "❌ Error: Required build artifacts not found."
+    echo "Expected: dist/index.js, dist/index.d.ts"
+    exit 1
+fi
+
+# Set npm registry authentication
+if [ -n "${NPM_TOKEN:-}" ]; then
+    echo "🔐 Setting up npm authentication..."
+    echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+fi
+
+# Determine if this is a pre-release
+if echo "$PACKAGE_VERSION" | grep -E '\-[a-zA-Z0-9-]+$'; then
+    echo "🔖 Detected pre-release version: $PACKAGE_VERSION"
+    PUBLISH_TAG="beta"
+else
+    echo "🔖 Detected stable release version: $PACKAGE_VERSION"
+    PUBLISH_TAG="latest"
+fi
+
+# Publish to npm
+echo "📤 Publishing to npm with tag: $PUBLISH_TAG"
+if npm publish --tag "$PUBLISH_TAG" --access public; then
+    echo "✅ Successfully published $PACKAGE_NAME@$PACKAGE_VERSION!"
+    
+    # Create git tag
+    echo "🏷️  Creating git tag..."
+    git tag "v$PACKAGE_VERSION"
+    git push origin "v$PACKAGE_VERSION"
+    
+    echo "🎉 Release completed successfully!"
+    echo "📦 Package: https://www.npmjs.com/package/$PACKAGE_NAME"
+    echo "🏷️  Tag: v$PACKAGE_VERSION"
+    
+    # Clean up npmrc if we created it
+    if [ -n "${NPM_TOKEN:-}" ]; then
+        rm -f ~/.npmrc
+    fi
+else
+    echo "❌ Failed to publish to npm."
+    
+    # Clean up npmrc if we created it
+    if [ -n "${NPM_TOKEN:-}" ]; then
+        rm -f ~/.npmrc
+    fi
+    
+    exit 1
+fi 
