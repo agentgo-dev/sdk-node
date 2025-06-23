@@ -65,7 +65,7 @@ class SessionManager {
 
       console.log(`✅ Created session ${session.id} in ${session.region}`);
       console.log(`   Status: ${session.status}`);
-      console.log(`   Keep Alive: ${session.keepAlive}`);
+      console.log(`   Duration: ${session.duration} seconds`);
 
       return session;
     } catch (error) {
@@ -91,16 +91,12 @@ class SessionManager {
       console.log(`📊 Session ${sessionId} details:`);
       console.log(`   Status: ${session.status}`);
       console.log(
-        `   Created: ${new Date(session.createdAt).toLocaleString()}`
+        `   Created: ${new Date(session.createAt).toLocaleString()}`
       );
       console.log(
-        `   Updated: ${new Date(session.updatedAt).toLocaleString()}`
+        `   Updated: ${new Date(session.updateAt).toLocaleString()}`
       );
-
-      if (session.resourceUsage) {
-        console.log(`   Memory: ${session.resourceUsage.memoryUsage}MB`);
-        console.log(`   CPU: ${session.resourceUsage.cpuUsage}%`);
-      }
+      console.log(`   Duration: ${session.duration} seconds`);
 
       return session;
     } catch (error) {
@@ -138,8 +134,9 @@ class SessionManager {
         console.log(`      Status: ${session.status}`);
         console.log(`      Region: ${session.region}`);
         console.log(
-          `      Created: ${new Date(session.createdAt).toLocaleString()}`
+          `      Created: ${new Date(session.createAt).toLocaleString()}`
         );
+        console.log(`      Duration: ${session.duration} seconds`);
       });
 
       return response.sessions;

@@ -12,8 +12,6 @@ export type {
   SessionCreateParams,
   SessionListParams,
   SessionListResponse,
-  SessionMetadata,
-  SessionResourceUsage,
 } from './sessions/sessions';
 
 // Import Sessions for type definition

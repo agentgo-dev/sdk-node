@@ -30,19 +30,13 @@ describe('Sessions', () => {
   describe('create', () => {
     const mockSession: Session = {
       id: 'session-123',
-      createdAt: '2024-01-15T10:30:00Z',
-      updatedAt: '2024-01-15T10:30:00Z',
+      createAt: '2024-01-15T10:30:00Z',
+      updateAt: '2024-01-15T10:30:00Z',
       status: 'RUNNING',
       region: 'US',
-      keepAlive: true,
+      duration: 604800,
       connectionUrl:
         'wss://app.browsers.live?launch-options=%7B%22_apikey%22%3A%22api_key%22%7D',
-      timeout: 30,
-      maxPages: 4,
-      metadata: {
-        userAgent: 'AgentGo Browser Session',
-        resolution: '1920x1080',
-      },
     };
 
     it('should create session with default parameters', async () => {
@@ -53,7 +47,7 @@ describe('Sessions', () => {
       expect(mockClient.post).toHaveBeenCalledWith('/api/v1/sessions', {
         body: {
           region: 'US',
-          keepAlive: false,
+          keepAlive: true,
         },
       });
       expect(result).toEqual(mockSession);
@@ -63,7 +57,6 @@ describe('Sessions', () => {
       (mockClient.post as jest.Mock).mockResolvedValue(mockSession);
 
       const params = {
-        apiKey: 'custom_api_key',
         region: 'US' as const,
         keepAlive: true,
       };
@@ -72,7 +65,6 @@ describe('Sessions', () => {
 
       expect(mockClient.post).toHaveBeenCalledWith('/api/v1/sessions', {
         body: {
-          apiKey: 'custom_api_key',
           region: 'US',
           keepAlive: true,
         },
@@ -90,28 +82,19 @@ describe('Sessions', () => {
 
   describe('list', () => {
     const mockListResponse: SessionListResponse = {
+      limit: 20,
       sessions: [
         {
           id: 'session-123',
-          createdAt: '2024-01-15T10:30:00Z',
-          updatedAt: '2024-01-15T10:35:00Z',
+          createAt: '2024-01-15T10:30:00Z',
+          updateAt: '2024-01-15T10:35:00Z',
           status: 'RUNNING',
           region: 'US',
-          keepAlive: true,
-          connectionUrl: 'wss://example.com',
-          timeout: 30,
-          maxPages: 4,
           duration: 300,
-          pages: 2,
-          metadata: {
-            userAgent: 'AgentGo Browser Session',
-            resolution: '1920x1080',
-          },
+          connectionUrl: 'wss://example.com',
         },
       ],
       total: 1,
-      limit: 20,
-      offset: 0,
     };
 
     it('should list sessions with default parameters', async () => {
@@ -132,7 +115,6 @@ describe('Sessions', () => {
         status: 'RUNNING' as const,
         region: 'US' as const,
         limit: 10,
-        offset: 5,
       };
 
       const result = await sessions.list(params);
@@ -142,7 +124,6 @@ describe('Sessions', () => {
           status: 'RUNNING',
           region: 'US',
           limit: 10,
-          offset: 5,
         },
       });
       expect(result).toEqual(mockListResponse);
@@ -150,10 +131,9 @@ describe('Sessions', () => {
 
     it('should handle empty results', async () => {
       const emptyResponse: SessionListResponse = {
+        limit: 20,
         sessions: [],
         total: 0,
-        limit: 20,
-        offset: 0,
       };
 
       (mockClient.get as jest.Mock).mockResolvedValue(emptyResponse);
@@ -168,29 +148,13 @@ describe('Sessions', () => {
   describe('retrieve', () => {
     const mockSession: Session = {
       id: 'session-123',
-      createdAt: '2024-01-15T10:30:00Z',
-      updatedAt: '2024-01-15T10:35:00Z',
-      startedAt: '2024-01-15T10:30:15Z',
-      endedAt: null,
+      createAt: '2024-01-15T10:30:00Z',
+      updateAt: '2024-01-15T10:35:00Z',
       status: 'RUNNING',
       region: 'US',
-      keepAlive: true,
-      playgroundId: null,
+      duration: 604800,
       connectionUrl:
         'wss://app.browsers.live?launch-options=%7B%22_session%22%3A%22session-123%22%7D',
-      timeout: 30,
-      maxPages: 4,
-      currentPages: 2,
-      metadata: {
-        userAgent: 'AgentGo Browser Session',
-        resolution: '1920x1080',
-        lastActivity: '2024-01-15T10:35:00Z',
-      },
-      resourceUsage: {
-        memoryUsage: 256,
-        cpuUsage: 15,
-        networkBytes: 1024000,
-      },
     };
 
     it('should retrieve session by ID', async () => {
@@ -235,18 +199,12 @@ describe('Sessions', () => {
   describe('getConnection', () => {
     const mockSession: Session = {
       id: 'session-123',
-      createdAt: '2024-01-15T10:30:00Z',
-      updatedAt: '2024-01-15T10:30:00Z',
+      createAt: '2024-01-15T10:30:00Z',
+      updateAt: '2024-01-15T10:30:00Z',
       status: 'RUNNING',
       region: 'US',
-      keepAlive: true,
+      duration: 604800,
       connectionUrl: 'wss://example.com',
-      timeout: 30,
-      maxPages: 4,
-      metadata: {
-        userAgent: 'AgentGo Browser Session',
-        resolution: '1920x1080',
-      },
     };
 
     it('should return connection information', async () => {
@@ -266,18 +224,12 @@ describe('Sessions', () => {
     it('should return true for running session', async () => {
       const mockSession: Session = {
         id: 'session-123',
-        createdAt: '2024-01-15T10:30:00Z',
-        updatedAt: '2024-01-15T10:30:00Z',
+        createAt: '2024-01-15T10:30:00Z',
+        updateAt: '2024-01-15T10:30:00Z',
         status: 'RUNNING',
         region: 'US',
-        keepAlive: true,
+        duration: 604800,
         connectionUrl: 'wss://example.com',
-        timeout: 30,
-        maxPages: 4,
-        metadata: {
-          userAgent: 'AgentGo Browser Session',
-          resolution: '1920x1080',
-        },
       };
 
       (mockClient.get as jest.Mock).mockResolvedValue(mockSession);
@@ -287,21 +239,15 @@ describe('Sessions', () => {
       expect(result).toBe(true);
     });
 
-    it('should return false for completed session', async () => {
+    it('should return false for expired session', async () => {
       const mockSession: Session = {
         id: 'session-123',
-        createdAt: '2024-01-15T10:30:00Z',
-        updatedAt: '2024-01-15T10:30:00Z',
-        status: 'COMPLETED',
+        createAt: '2024-01-15T10:30:00Z',
+        updateAt: '2024-01-15T10:30:00Z',
+        status: 'EXPIRED',
         region: 'US',
-        keepAlive: false,
+        duration: 604800,
         connectionUrl: 'wss://example.com',
-        timeout: 30,
-        maxPages: 4,
-        metadata: {
-          userAgent: 'AgentGo Browser Session',
-          resolution: '1920x1080',
-        },
       };
 
       (mockClient.get as jest.Mock).mockResolvedValue(mockSession);

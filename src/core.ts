@@ -51,7 +51,7 @@ export class AgentGoClient implements IAgentGoClient {
       );
     }
 
-    this._baseURL = options.baseURL ?? 'https://app.agentgo.live';
+    this._baseURL = options.baseURL ?? 'https://session.browsers.live';
     this._timeout = options.timeout ?? 30000; // 30 seconds
     this._maxRetries = options.maxRetries ?? 3;
     this._defaultHeaders = {

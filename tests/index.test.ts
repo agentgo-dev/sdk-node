@@ -5,15 +5,8 @@
 import { AgentGo, AgentGoError } from '../src/index';
 
 // Mock the fetch function for tests
-const originalFetch = global.fetch;
-
-beforeAll(() => {
-  global.fetch = jest.fn();
-});
-
-afterAll(() => {
-  global.fetch = originalFetch;
-});
+global.fetch = jest.fn();
+(globalThis as any).fetch = global.fetch;
 
 describe('AgentGo', () => {
   beforeEach(() => {
@@ -46,13 +39,13 @@ describe('AgentGo', () => {
     it('should create client with custom configuration', () => {
       const client = new AgentGo({
         apiKey: 'test-key',
-        baseURL: 'https://custom.agentgo.live',
+        baseURL: 'https://custom.session.browsers.live',
         timeout: 60000,
         maxRetries: 5,
       });
 
       const config = client.getConfig();
-      expect(config.baseURL).toBe('https://custom.agentgo.live');
+      expect(config.baseURL).toBe('https://custom.session.browsers.live');
       expect(config.timeout).toBe(60000);
       expect(config.maxRetries).toBe(5);
     });
@@ -64,7 +57,7 @@ describe('AgentGo', () => {
       const config = client.getConfig();
 
       expect(config).toEqual({
-        baseURL: 'https://app.agentgo.live',
+        baseURL: 'https://session.browsers.live',
         timeout: 30000,
         maxRetries: 3,
       });
@@ -77,10 +70,9 @@ describe('AgentGo', () => {
   describe('testConnection', () => {
     it('should return true on successful connection', async () => {
       const mockResponse = {
+        limit: 1,
         sessions: [],
         total: 0,
-        limit: 1,
-        offset: 0,
       };
 
       (global.fetch as jest.Mock).mockResolvedValue({
@@ -132,7 +124,7 @@ describe('AgentGo', () => {
         version: '1.0.0',
         userAgent: 'agentgo-node/1.0.0',
         runtime: {
-          baseURL: 'https://app.agentgo.live',
+          baseURL: 'https://session.browsers.live',
           timeout: 30000,
           maxRetries: 3,
         },
@@ -142,13 +134,13 @@ describe('AgentGo', () => {
     it('should reflect custom configuration', () => {
       const client = new AgentGo({
         apiKey: 'test-key',
-        baseURL: 'https://custom.agentgo.live',
+        baseURL: 'https://custom.session.browsers.live',
         timeout: 60000,
       });
 
       const info = client.getInfo();
 
-      expect(info.runtime.baseURL).toBe('https://custom.agentgo.live');
+      expect(info.runtime.baseURL).toBe('https://custom.session.browsers.live');
       expect(info.runtime.timeout).toBe(60000);
     });
   });
@@ -157,18 +149,12 @@ describe('AgentGo', () => {
     it('should create and manage sessions', async () => {
       const mockSession = {
         id: 'session-123',
-        createdAt: '2024-01-15T10:30:00Z',
-        updatedAt: '2024-01-15T10:30:00Z',
+        createAt: '2024-01-15T10:30:00Z',
+        updateAt: '2024-01-15T10:30:00Z',
         status: 'RUNNING',
         region: 'US',
-        keepAlive: true,
+        duration: 604800,
         connectionUrl: 'wss://example.com',
-        timeout: 30,
-        maxPages: 4,
-        metadata: {
-          userAgent: 'AgentGo Browser Session',
-          resolution: '1920x1080',
-        },
       };
 
       // Mock create session response

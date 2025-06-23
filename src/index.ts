@@ -25,7 +25,7 @@ export interface AgentGoOptions extends AgentGoClientOptions {
 
   /**
    * Base URL for the AgentGo API
-   * @default 'https://app.agentgo.live'
+   * @default 'https://session.browsers.live'
    */
   baseURL?: string;
 
@@ -96,7 +96,7 @@ export class AgentGo {
    * // With custom configuration
    * const client = new AgentGo({
    *   apiKey: 'your_api_key_here',
-   *   baseURL: 'https://custom.agentgo.live',
+   *   baseURL: 'https://session.browsers.live',
    *   timeout: 60000,
    *   maxRetries: 5
    * });
@@ -202,8 +202,6 @@ export type {
   SessionCreateParams,
   SessionListParams,
   SessionListResponse,
-  SessionMetadata,
-  SessionResourceUsage,
 } from './resources/sessions/sessions.js';
 
 // Export client types

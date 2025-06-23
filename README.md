@@ -25,14 +25,14 @@ npm install agentgo-node
 import { AgentGo } from 'agentgo-node';
 
 const client = new AgentGo({
-  apiKey: 'your_api_key_here'
+  apiKey: 'your_api_key_here',
 });
 
 async function example() {
   // Create a new browser session
   const session = await client.sessions.create({
     region: 'US',
-    keepAlive: true
+    keepAlive: true,
   });
 
   console.log('Session created:', session.id);
@@ -40,8 +40,8 @@ async function example() {
 
   // List all sessions
   const sessions = await client.sessions.list({
-    status: 'RUNNING',
-    limit: 10
+    status: 'IDLE',
+    limit: 10,
   });
 
   console.log('Active sessions:', sessions.sessions.length);
@@ -60,15 +60,18 @@ example().catch(console.error);
 const { AgentGo } = require('agentgo-node');
 
 const client = new AgentGo({
-  apiKey: 'your_api_key_here'
+  apiKey: 'your_api_key_here',
 });
 
-client.sessions.create({
-  region: 'US',
-  keepAlive: true
-}).then(session => {
-  console.log('Session created:', session.id);
-}).catch(console.error);
+client.sessions
+  .create({
+    region: 'US',
+    keepAlive: true,
+  })
+  .then((session) => {
+    console.log('Session created:', session.id);
+  })
+  .catch(console.error);
 ```
 
 ## Configuration
@@ -80,7 +83,7 @@ You can provide your API key in several ways:
 ```typescript
 // 1. Constructor option
 const client = new AgentGo({
-  apiKey: 'your_api_key_here'
+  apiKey: 'your_api_key_here',
 });
 
 // 2. Environment variable
@@ -90,9 +93,9 @@ const client = new AgentGo();
 // 3. Configuration object
 const client = new AgentGo({
   apiKey: 'your_api_key_here',
-  baseURL: 'https://app.agentgo.live',  // optional
-  timeout: 30000,                       // optional
-  maxRetries: 3                         // optional
+  baseURL: 'https://session.browsers.live', // optional
+  timeout: 30000, // optional
+  maxRetries: 3, // optional
 });
 ```
 
@@ -113,10 +116,9 @@ const session = await client.sessions.create({
 
 ```typescript
 const sessions = await client.sessions.list({
-  status?: 'RUNNING',      // Filter by status
+  status?: 'IDLE',         // Filter by status (IDLE/RUNNING/EXPIRED)
   region?: 'US',           // Filter by region
   limit?: 20,              // Max results (1-100)
-  offset?: 0               // Pagination offset
 });
 ```
 
@@ -135,7 +137,7 @@ import { AgentGo, AgentGoError } from 'agentgo-node';
 
 try {
   const session = await client.sessions.create({
-    region: 'INVALID_REGION'
+    region: 'INVALID_REGION',
   });
 } catch (error) {
   if (error instanceof AgentGoError) {
@@ -157,7 +159,7 @@ const client = new AgentGo({ apiKey: 'your_api_key_here' });
 
 const params: SessionCreateParams = {
   region: 'US',
-  keepAlive: true
+  keepAlive: true,
 };
 
 const session: Session = await client.sessions.create(params);
@@ -196,4 +198,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - 📧 Email: support@agentgo.live
 - 📚 Documentation: [AgentGo Docs](https://docs.agentgo.live)
-- 🐛 Issues: [GitHub Issues](https://github.com/agentgo/sdk-node/issues)
+- 🐛 Issues: [GitHub Issues](https://github.com/agentgo-dev/sdk-node/issues)

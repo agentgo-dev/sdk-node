@@ -7,18 +7,13 @@ import { APIResource } from '../../resource';
 import type { AgentGoClient } from '../../resource';
 
 // Session status types
-export type SessionStatus = 'RUNNING' | 'COMPLETED' | 'FAILED' | 'EXPIRED';
+export type SessionStatus = 'IDLE' | 'RUNNING' | 'EXPIRED';
 
 // Geographic regions
 export type SessionRegion = 'US';
 
 // Session creation parameters
 export interface SessionCreateParams {
-  /**
-   * Your AgentGo API key
-   */
-  apiKey?: string;
-
   /**
    * Geographic region code. Currently supported: US (default)
    */
@@ -53,19 +48,6 @@ export interface SessionListParams {
   offset?: number;
 }
 
-// Session metadata
-export interface SessionMetadata {
-  userAgent: string;
-  resolution: string;
-  lastActivity?: string;
-}
-
-// Session resource usage
-export interface SessionResourceUsage {
-  memoryUsage: number;
-  cpuUsage: number;
-  networkBytes: number;
-}
 
 // Main session object
 export interface Session {
@@ -75,24 +57,9 @@ export interface Session {
   id: string;
 
   /**
-   * Session creation timestamp (ISO 8601)
+   * Geographic region where session is running
    */
-  createdAt: string;
-
-  /**
-   * Session last update timestamp (ISO 8601)
-   */
-  updatedAt: string;
-
-  /**
-   * Session start timestamp (ISO 8601)
-   */
-  startedAt?: string;
-
-  /**
-   * Session end timestamp (ISO 8601), null if still running
-   */
-  endedAt?: string | null;
+  region: SessionRegion;
 
   /**
    * Session status
@@ -100,67 +67,31 @@ export interface Session {
   status: SessionStatus;
 
   /**
-   * Geographic region where session is running
+   * Session duration in seconds
    */
-  region: SessionRegion;
+  duration: number;
 
   /**
-   * Whether keep-alive mode is enabled
+   * Session creation timestamp (ISO 8601)
    */
-  keepAlive: boolean;
+  createAt: string;
 
   /**
-   * Associated playground ID (if applicable)
+   * Session last update timestamp (ISO 8601)
    */
-  playgroundId?: string | null;
+  updateAt: string;
 
   /**
-   * Playwright connection URL
+   * WebSocket connection URL for browser automation
    */
   connectionUrl: string;
-
-  /**
-   * Session timeout in seconds
-   */
-  timeout: number;
-
-  /**
-   * Maximum pages allowed per browser
-   */
-  maxPages: number;
-
-  /**
-   * Current number of active pages
-   */
-  currentPages?: number;
-
-  /**
-   * Duration in seconds (for list responses)
-   */
-  duration?: number;
-
-  /**
-   * Number of pages (for list responses)
-   */
-  pages?: number;
-
-  /**
-   * Session metadata
-   */
-  metadata: SessionMetadata;
-
-  /**
-   * Resource usage information (for detailed responses)
-   */
-  resourceUsage?: SessionResourceUsage;
 }
 
 // Session list response
 export interface SessionListResponse {
+  limit: number;
   sessions: Session[];
   total: number;
-  limit: number;
-  offset: number;
 }
 
 /**
@@ -189,9 +120,8 @@ export class Sessions extends APIResource {
    */
   async create(params: SessionCreateParams = {}): Promise<Session> {
     const body = this._cleanParams({
-      apiKey: params.apiKey,
       region: params.region ?? 'US',
-      keepAlive: params.keepAlive ?? false,
+      keepAlive: params.keepAlive ?? true,
     });
 
     return this._post<Session>('/api/v1/sessions', body);
@@ -205,9 +135,9 @@ export class Sessions extends APIResource {
    *
    * @example
    * ```typescript
-   * // Get all running sessions
+   * // Get all idle sessions
    * const sessions = await client.sessions.list({
-   *   status: 'RUNNING',
+   *   status: 'IDLE',
    *   limit: 10
    * });
    *
@@ -236,9 +166,9 @@ export class Sessions extends APIResource {
    *
    * @example
    * ```typescript
-   * const session = await client.sessions.retrieve('session-auto-generated-123');
+   * const session = await client.sessions.retrieve('d7644b7e_637d3df1e086a');
    * console.log('Session status:', session.status);
-   * console.log('Resource usage:', session.resourceUsage);
+   * console.log('Connection URL:', session.connectionUrl);
    * ```
    */
   async retrieve(sessionId: string): Promise<Session> {
@@ -278,6 +208,21 @@ export class Sessions extends APIResource {
       return session.status === 'RUNNING';
     } catch (error) {
       // If session not found or other error, consider it inactive
+      return false;
+    }
+  }
+
+  /**
+   * Check if a session is idle and available for use
+   *
+   * @param sessionId - The unique session identifier
+   * @returns Promise resolving to boolean indicating if session is idle
+   */
+  async isIdle(sessionId: string): Promise<boolean> {
+    try {
+      const session = await this.retrieve(sessionId);
+      return session.status === 'IDLE';
+    } catch (error) {
       return false;
     }
   }

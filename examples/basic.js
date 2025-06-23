@@ -29,7 +29,7 @@ async function basicExample() {
         console.log(`   ID: ${session.id}`);
         console.log(`   Status: ${session.status}`);
         console.log(`   Region: ${session.region}`);
-        console.log(`   Keep Alive: ${session.keepAlive}`);
+        console.log(`   Duration: ${session.duration} seconds`);
         console.log(`   Connection URL: ${session.connectionUrl}`);
         console.log();
 
@@ -48,9 +48,9 @@ async function basicExample() {
         console.log('✅ Full session details:');
         console.log(`   ID: ${fullSession.id}`);
         console.log(`   Status: ${fullSession.status}`);
-        console.log(`   Created: ${fullSession.createdAt}`);
-        console.log(`   Updated: ${fullSession.updatedAt}`);
-        console.log(`   Pages: ${fullSession.currentPages || 0}/${fullSession.maxPages}`);
+        console.log(`   Created: ${fullSession.createAt}`);
+        console.log(`   Updated: ${fullSession.updateAt}`);
+        console.log(`   Duration: ${fullSession.duration} seconds`);
         console.log();
 
         // List all sessions
