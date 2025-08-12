@@ -1,5 +1,5 @@
 {
-  "name": "@agentgo/sdk",
+  "name": "@agentgo-dev/sdk",
   "version": "1.0.0",
   "description": "Node.js SDK for AgentGo - A headless browser automation platform",
   "main": "dist/index.js",
@@ -28,7 +28,7 @@
     "format": "prettier --write src/**/*.ts",
     "format:check": "prettier --check src/**/*.ts",
     "clean": "rm -rf dist",
-    "prepublishOnly": "npm run clean && npm run build && npm run test"
+    "prepublishOnly": "npm run clean && npm run lint && npm run build && npm test"
   },
   "keywords": [
     "agentgo",

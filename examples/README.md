@@ -179,7 +179,7 @@ Then load it in your application:
 
 ```javascript
 require('dotenv').config();
-const { AgentGo } = require('agentgo-node');
+const { AgentGo } = require('@agentgo-dev/sdk');
 
 const client = new AgentGo(); // Will use AGENTGO_API_KEY automatically
 ```
@@ -277,7 +277,7 @@ process.on('SIGINT', async () => {
 
 1. **"Module not found" errors**
 
-   - Ensure you've installed the package: `npm install agentgo-node`
+   - Ensure you've installed the package: `npm install @agentgo-dev/sdk`
    - For TypeScript examples: `npm install -D tsx`
 
 2. **Authentication errors**

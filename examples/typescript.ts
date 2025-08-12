@@ -14,7 +14,7 @@ import {
   type SessionListParams,
   type SessionStatus,
   type SessionRegion,
-} from 'agentgo-node';
+} from '@agentgo-dev/sdk';
 
 interface SessionConfig {
   region: SessionRegion;

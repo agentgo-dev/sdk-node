@@ -1,0 +1,31 @@
+# Source files
+src/
+tests/
+examples/
+
+# Configuration files
+tsconfig.json
+jest.config.js
+.eslintrc.js
+.prettierrc
+.gitignore
+CLAUDE.md
+
+# Build artifacts
+coverage/
+node_modules/
+*.log
+.env*
+
+# Development files
+.vscode/
+.idea/
+*.test.ts
+*.spec.ts
+
+# Documentation (keep README.md and LICENSE)
+docs/
+*.mdx
+*.mdc
+implementation-plan.mdc
+sessions.mdx

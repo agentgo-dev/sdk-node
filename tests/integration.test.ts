@@ -16,6 +16,9 @@ describeRealTests('Real AgentGo API Integration', () => {
   let createdSessionId: string | null = null;
 
   beforeAll(() => {
+    if (!AGENTGO_API_KEY) {
+      throw new Error('AGENTGO_API_KEY environment variable is required for integration tests');
+    }
     client = new AgentGo({
       apiKey: AGENTGO_API_KEY,
       timeout: 30000, // 30 second timeout for real API calls
@@ -203,6 +206,9 @@ describeRealTests('Real AgentGo API Integration', () => {
     }, 15000);
 
     it('should handle network timeouts', async () => {
+      if (!AGENTGO_API_KEY) {
+        throw new Error('AGENTGO_API_KEY environment variable is required for integration tests');
+      }
       const timeoutClient = new AgentGo({
         apiKey: AGENTGO_API_KEY,
         timeout: 1, // Very short timeout

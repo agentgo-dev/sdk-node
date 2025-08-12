@@ -14,7 +14,7 @@ A powerful Node.js SDK for the AgentGo headless browser automation platform. Eas
 ## Installation
 
 ```bash
-npm install agentgo-node
+npm i @agentgo-dev/sdk
 ```
 
 ## Quick Start
@@ -22,7 +22,7 @@ npm install agentgo-node
 ### Basic Usage
 
 ```typescript
-import { AgentGo } from 'agentgo-node';
+import { AgentGo } from '@agentgo-dev/sdk';
 
 const client = new AgentGo({
   apiKey: 'your_api_key_here',
@@ -57,7 +57,7 @@ example().catch(console.error);
 ### JavaScript (CommonJS)
 
 ```javascript
-const { AgentGo } = require('agentgo-node');
+const { AgentGo } = require('@agentgo-dev/sdk');
 
 const client = new AgentGo({
   apiKey: 'your_api_key_here',
@@ -133,7 +133,7 @@ const session = await client.sessions.retrieve('session-id');
 The SDK provides structured error handling:
 
 ```typescript
-import { AgentGo, AgentGoError } from 'agentgo-node';
+import { AgentGo, AgentGoError } from '@agentgo-dev/sdk';
 
 try {
   const session = await client.sessions.create({
@@ -153,7 +153,7 @@ try {
 The SDK is written in TypeScript and provides full type definitions:
 
 ```typescript
-import { AgentGo, Session, SessionCreateParams } from 'agentgo-node';
+import { AgentGo, Session, SessionCreateParams } from '@agentgo-dev/sdk';
 
 const client = new AgentGo({ apiKey: 'your_api_key_here' });
 

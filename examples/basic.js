@@ -5,7 +5,7 @@
  * including creating sessions, listing sessions, and checking status.
  */
 
-const { AgentGo } = require('agentgo-node');
+const { AgentGo } = require('@agentgo-dev/sdk');
 
 async function basicExample() {
     try {

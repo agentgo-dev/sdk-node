@@ -23,9 +23,7 @@
     "exactOptionalPropertyTypes": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedIndexedAccess": true,
-    "noPropertyAccessFromIndexSignature": false,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "noPropertyAccessFromIndexSignature": false
   },
   "include": [
     "src/**/*"
