@@ -3,8 +3,7 @@
  * Global configuration for test environment
  */
 
-// Mock environment variables for tests
-process.env.AGENTGO_API_KEY = 'test_api_key_123';
+// Note: Environment variables are set per test case
 
 // Mock console methods to reduce noise in tests
 const originalConsoleWarn = console.warn;
@@ -21,4 +20,4 @@ afterAll(() => {
 });
 
 // Global test timeout
-jest.setTimeout(10000);
+jest.setTimeout(30000);

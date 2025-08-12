@@ -182,9 +182,9 @@ describeRealTests('Real AgentGo API Integration', () => {
     it('should filter sessions by region', async () => {
       const usResponse = await client.sessions.list({ region: 'US' });
 
-      // All returned sessions should be in US region
+      // All returned sessions should be in US region (API returns lowercase)
       usResponse.sessions.forEach((session) => {
-        expect(session.region).toBe('US');
+        expect(session.region.toLowerCase()).toBe('us');
       });
 
       console.log(`US region sessions: ${usResponse.total}`);
