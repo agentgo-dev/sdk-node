@@ -59,7 +59,7 @@ export const getNodeFetch = (): typeof fetch => {
 export const getNodeHeaders = (): Record<string, string> => {
   const nodeVersion = getNodeVersion();
   return {
-    'User-Agent': `agentgo-node/1.0.0 (Node.js ${nodeVersion})`,
+    'User-Agent': `agentgo-node/1.0.1 (Node.js ${nodeVersion})`,
   };
 };
 

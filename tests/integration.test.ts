@@ -51,8 +51,8 @@ describeRealTests('Real AgentGo API Integration', () => {
 
     it('should return correct SDK info', () => {
       const info = client.getInfo();
-      expect(info.version).toBe('1.0.0');
-      expect(info.userAgent).toBe('agentgo-node/1.0.0');
+      expect(info.version).toBe('1.0.1');
+      expect(info.userAgent).toBe('agentgo-node/1.0.1');
       expect(info.runtime.baseURL).toBe('https://session.browsers.live');
     });
   });

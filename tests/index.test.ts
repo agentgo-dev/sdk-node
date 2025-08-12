@@ -11,8 +11,7 @@ global.fetch = jest.fn();
 describe('AgentGo', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    // Reset environment variable
-    delete process.env.AGENTGO_API_KEY;
+    // Don't delete environment variable as it might be needed for tests
   });
 
   describe('constructor', () => {
@@ -39,13 +38,13 @@ describe('AgentGo', () => {
     it('should create client with custom configuration', () => {
       const client = new AgentGo({
         apiKey: 'test-key',
-        baseURL: 'https://custom.session.browsers.live',
+        baseURL: 'https://api.example.com',
         timeout: 60000,
         maxRetries: 5,
       });
 
       const config = client.getConfig();
-      expect(config.baseURL).toBe('https://custom.session.browsers.live');
+      expect(config.baseURL).toBe('https://api.example.com');
       expect(config.timeout).toBe(60000);
       expect(config.maxRetries).toBe(5);
     });
@@ -121,8 +120,8 @@ describe('AgentGo', () => {
       const info = client.getInfo();
 
       expect(info).toEqual({
-        version: '1.0.0',
-        userAgent: 'agentgo-node/1.0.0',
+        version: '1.0.1',
+        userAgent: 'agentgo-node/1.0.1',
         runtime: {
           baseURL: 'https://session.browsers.live',
           timeout: 30000,
@@ -134,13 +133,13 @@ describe('AgentGo', () => {
     it('should reflect custom configuration', () => {
       const client = new AgentGo({
         apiKey: 'test-key',
-        baseURL: 'https://custom.session.browsers.live',
+        baseURL: 'https://api.example.com',
         timeout: 60000,
       });
 
       const info = client.getInfo();
 
-      expect(info.runtime.baseURL).toBe('https://custom.session.browsers.live');
+      expect(info.runtime.baseURL).toBe('https://api.example.com');
       expect(info.runtime.timeout).toBe(60000);
     });
   });

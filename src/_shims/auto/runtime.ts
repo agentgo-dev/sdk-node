@@ -68,7 +68,7 @@ export const getAutoHeaders = (): Record<string, string> => {
       return getWebHeaders();
     default:
       return {
-        'User-Agent': `agentgo-node/1.0.0 (${runtime})`,
+        'User-Agent': `agentgo-node/1.0.1 (${runtime})`,
       };
   }
 };

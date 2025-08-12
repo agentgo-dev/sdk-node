@@ -57,7 +57,7 @@ export class AgentGoClient implements IAgentGoClient {
     this._defaultHeaders = {
       'Content-Type': 'application/json',
       'x-api-key': this._apiKey,
-      'User-Agent': 'agentgo-node/1.0.0',
+      'User-Agent': 'agentgo-node/1.0.1',
       ...options.defaultHeaders,
     };
   }

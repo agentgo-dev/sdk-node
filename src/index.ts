@@ -180,8 +180,8 @@ export class AgentGo {
   } {
     const config = this.getConfig();
     return {
-      version: '1.0.0',
-      userAgent: 'agentgo-node/1.0.0',
+      version: '1.0.1',
+      userAgent: 'agentgo-node/1.0.1',
       runtime: {
         baseURL: config.baseURL,
         timeout: config.timeout,

@@ -51,7 +51,7 @@ export const getWebFetch = (): typeof fetch => {
  */
 export const getWebHeaders = (): Record<string, string> => {
   const headers: Record<string, string> = {
-    'User-Agent': 'agentgo-node/1.0.0 (Browser)',
+    'User-Agent': 'agentgo-node/1.0.1 (Browser)',
   };
 
   // Add browser-specific information if available
