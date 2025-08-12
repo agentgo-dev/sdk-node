@@ -1,6 +1,6 @@
 {
   "name": "@agentgo-dev/sdk",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Node.js SDK for AgentGo - A headless browser automation platform",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
